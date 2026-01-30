@@ -8,7 +8,6 @@ const html = htm.bind(React.createElement);
 const CATEGORIES = ['All', 'Action', 'Puzzle', 'Sports', 'Arcade', 'Adventure', 'Strategy'];
 const LOGO_URL = 'https://i.ibb.co/cPqZF2V/Arcanelogo.png';
 
-// UV Encoding Utility (XOR)
 const __uv$config = {
     prefix: '/uv/service/',
     encodeUrl: (url) => {
@@ -29,13 +28,13 @@ const QUICK_LINKS = [
 const App = () => {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [activeGame, setActiveGame] = useState(null);
   const [currentTab, setCurrentTab] = useState('home'); 
   const [cloakType, setCloakType] = useState('none'); 
   
-  // Proxy States
   const [proxyInput, setProxyInput] = useState('');
   const [activeProxyUrl, setActiveProxyUrl] = useState(null);
   const proxyIframeRef = useRef(null);
@@ -45,31 +44,60 @@ const App = () => {
   const [startTime] = useState(Date.now());
   const [status, setStatus] = useState('Checking...');
 
-  useEffect(() => {
+  const fetchGames = async () => {
+    setLoading(true);
+    setError(null);
     const t0 = performance.now();
-    const loadPromise = fetch('./data/games.json')
-      .then(response => {
-        const t1 = performance.now();
-        setLatency(Math.round(t1 - t0));
+    
+    // List of paths to try to find the games.json file
+    const pathsToTry = [
+      './data/games.json',
+      'data/games.json',
+      '/data/games.json'
+    ];
+    
+    let lastError = null;
+    let foundData = false;
+
+    for (const path of pathsToTry) {
+      try {
+        console.log(`Arcane: Attempting to summon archives from ${path}`);
+        // Removed the query parameter (?v=...) as some static servers block them for json files
+        const response = await fetch(path);
+        
         if (response.ok) {
-          setStatus('Operational');
-          return response.json();
+          const data = await response.json();
+          if (Array.isArray(data)) {
+            const t1 = performance.now();
+            setLatency(Math.round(t1 - t0));
+            setGames(data);
+            setStatus('Operational');
+            foundData = true;
+            console.log(`Arcane: Successfully summoned archives from ${path}`);
+            break; // Stop trying paths once we find it
+          } else {
+            throw new Error('Mismatched data format (Not an array)');
+          }
+        } else {
+          lastError = `HTTP ${response.status} at ${path}`;
         }
-        throw new Error('Offline');
-      });
+      } catch (err) {
+        lastError = err.message;
+        console.warn(`Arcane: Failed to summon from ${path}: ${err.message}`);
+      }
+    }
 
-    const timeoutPromise = new Promise(resolve => setTimeout(resolve, 2800));
+    if (!foundData) {
+      console.error('Arcane Summoning Error: All paths exhausted.');
+      setError(lastError || 'Could not locate the Arcane archives.');
+      setStatus('Offline');
+    }
+    
+    setLoading(false);
+  };
 
-    Promise.all([loadPromise, timeoutPromise])
-      .then(([data]) => {
-        setGames(data);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error('Error fetching games:', error);
-        setStatus('Degraded');
-        setTimeout(() => setLoading(false), 2800);
-      });
+  useEffect(() => {
+    fetchGames();
   }, []);
 
   useEffect(() => {
@@ -126,7 +154,12 @@ const App = () => {
   }, [games, searchQuery, selectedCategory]);
 
   const featuredGame = useMemo(() => games.find(g => g.id === 'galaxy-clicker') || games[0], [games]);
-  const trendingGames = useMemo(() => games.filter(g => g.isHot).slice(0, 8), [games]);
+  
+  const trendingGames = useMemo(() => {
+    const hot = games.filter(g => g.isHot);
+    const others = games.filter(g => !g.isHot);
+    return [...hot, ...others].slice(0, 12);
+  }, [games]);
 
   if (loading) {
     return html`
@@ -141,14 +174,37 @@ const App = () => {
           </div>
           
           <div className="mt-12 text-center">
-            <h1 className="text-4xl font-black text-white tracking-[0.2em] mb-2 drop-shadow-lg">ARCANE</h1>
+            <h1 className="text-4xl font-black text-white tracking-[0.2em] mb-2 drop-shadow-lg uppercase tracking-widest">ARCANE</h1>
             <p className="text-purple-400/60 text-[10px] font-bold tracking-[0.4em] uppercase">Unlocking Mystical Realms</p>
           </div>
 
           <div className="mt-8 w-64 h-1 bg-neutral-900 rounded-full overflow-hidden border border-white/5 p-[1px]">
-            <div className="h-full bg-gradient-to-r from-purple-600 via-fuchsia-400 to-purple-600 casting-bar-inner shadow-[0_0_15px_rgba(167,139,250,0.6)] rounded-full"></div>
+            <div className="h-full bg-gradient-to-r from-purple-600 via-fuchsia-400 to-purple-600 shadow-[0_0_15px_rgba(167,139,250,0.6)] rounded-full animate-[casting-fill_2s_ease-in-out_forwards]"></div>
           </div>
         </div>
+      </div>
+    `;
+  }
+
+  if (error && games.length === 0) {
+    return html`
+      <div className="min-h-screen bg-[#050505] flex flex-col items-center justify-center p-10 text-center">
+         <div className="w-24 h-24 mb-8 bg-neutral-900 rounded-full flex items-center justify-center border border-neutral-800 shadow-2xl">
+            <svg className="w-12 h-12 text-red-500 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+         </div>
+         <h2 className="text-3xl font-black text-white mb-2 uppercase tracking-tighter">Summoning Failed</h2>
+         <p className="text-neutral-500 text-sm max-w-md mb-8">
+           The Arcane archives could not be reached (Error: ${error}). 
+           The archives folder might be misplaced or restricted.
+         </p>
+         <button 
+           onClick=${fetchGames}
+           className="px-10 py-3 bg-purple-600 hover:bg-purple-500 text-white font-black text-xs uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-purple-900/40"
+         >
+           Try Again
+         </button>
       </div>
     `;
   }
@@ -172,7 +228,7 @@ const App = () => {
             className=${`w-full flex items-center p-4 md:px-6 transition-all ${currentTab === 'home' && !activeProxyUrl ? 'sidebar-item-active' : 'text-neutral-500 hover:text-white hover:bg-neutral-900'}`}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
-            <span className="hidden md:block ml-4 font-medium">Home</span>
+            <span className="hidden md:block ml-4 font-medium text-xs uppercase tracking-widest">Home</span>
           </button>
 
           <button 
@@ -180,7 +236,7 @@ const App = () => {
             className=${`w-full flex items-center p-4 md:px-6 transition-all ${currentTab === 'games' && !activeProxyUrl ? 'sidebar-item-active' : 'text-neutral-500 hover:text-white hover:bg-neutral-900'}`}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
-            <span className="hidden md:block ml-4 font-medium">Games</span>
+            <span className="hidden md:block ml-4 font-medium text-xs uppercase tracking-widest">Games</span>
           </button>
 
           <button 
@@ -188,7 +244,7 @@ const App = () => {
             className=${`w-full flex items-center p-4 md:px-6 transition-all ${currentTab === 'proxy' || activeProxyUrl ? 'sidebar-item-active' : 'text-neutral-500 hover:text-white hover:bg-neutral-900'}`}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" /></svg>
-            <span className="hidden md:block ml-4 font-medium">Proxy</span>
+            <span className="hidden md:block ml-4 font-medium text-xs uppercase tracking-widest">Proxy</span>
           </button>
 
           <button 
@@ -196,7 +252,7 @@ const App = () => {
             className=${`w-full flex items-center p-4 md:px-6 transition-all ${currentTab === 'rip' ? 'sidebar-item-active' : 'text-neutral-500 hover:text-white hover:bg-neutral-900'}`}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-            <span className="hidden md:block ml-4 font-medium">RIP</span>
+            <span className="hidden md:block ml-4 font-medium text-xs uppercase tracking-widest">RIP</span>
           </button>
           
           <button 
@@ -204,7 +260,7 @@ const App = () => {
             className=${`w-full flex items-center p-4 md:px-6 transition-all ${currentTab === 'settings' ? 'sidebar-item-active' : 'text-neutral-500 hover:text-white hover:bg-neutral-900'}`}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-            <span className="hidden md:block ml-4 font-medium">Settings</span>
+            <span className="hidden md:block ml-4 font-medium text-xs uppercase tracking-widest">Settings</span>
           </button>
         </nav>
       </aside>
@@ -216,7 +272,7 @@ const App = () => {
             <div className="relative flex-grow max-w-xl">
               <input 
                 type="text" 
-                placeholder="Search games..."
+                placeholder="Search magical archives..."
                 value=${searchQuery}
                 onInput=${(e) => {
                   setSearchQuery(e.target.value);
@@ -230,8 +286,8 @@ const App = () => {
             </div>
             <div className="flex items-center space-x-4 ml-4">
               <div className="hidden sm:block text-right">
-                <div className="text-sm font-medium text-white">Guest</div>
-                <div className="text-xs text-neutral-500">Connected</div>
+                <div className="text-sm font-medium text-white">Guest User</div>
+                <div className="text-[10px] text-neutral-500 font-bold uppercase tracking-widest">Active session</div>
               </div>
               <div className="w-10 h-10 flex items-center justify-center relative bg-neutral-900 rounded-full border border-neutral-800 p-1">
                 <img src=${LOGO_URL} className="w-full h-full object-contain" alt="Arcane" />
@@ -271,24 +327,33 @@ const App = () => {
            </div>
         ` : currentTab === 'home' ? html`
           <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <section className="relative h-80 rounded-[32px] overflow-hidden group cursor-pointer border border-neutral-800 shadow-2xl" onClick=${() => setActiveGame(featuredGame)}>
-              <img 
-                src=${featuredGame?.thumbnail} 
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
-              <div className="absolute bottom-10 left-10 max-w-lg">
-                <div className="flex items-center space-x-2 mb-3">
-                  <span className="px-3 py-1 bg-purple-600 text-[10px] font-black uppercase rounded-full text-white tracking-widest">TOP RATED</span>
-                  <span className="text-neutral-300 text-[10px] font-bold tracking-widest uppercase">Verified Source</span>
+            ${games.length > 0 ? html`
+              <section className="relative h-80 rounded-[32px] overflow-hidden group cursor-pointer border border-neutral-800 shadow-2xl" onClick=${() => setActiveGame(featuredGame)}>
+                <img 
+                  src=${featuredGame?.thumbnail} 
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+                <div className="absolute bottom-10 left-10 max-w-lg">
+                  <div className="flex items-center space-x-2 mb-3">
+                    <span className="px-3 py-1 bg-purple-600 text-[10px] font-black uppercase rounded-full text-white tracking-widest">TOP RATED</span>
+                    <span className="text-neutral-300 text-[10px] font-bold tracking-widest uppercase">Verified Source</span>
+                  </div>
+                  <h2 className="text-5xl font-black text-white mb-4 tracking-tighter">${featuredGame?.title}</h2>
+                  <p className="text-neutral-300 text-sm leading-relaxed mb-6 line-clamp-2 font-medium">${featuredGame?.description}</p>
+                  <button className="px-10 py-3.5 bg-white text-black font-black text-sm uppercase tracking-widest rounded-xl hover:bg-neutral-200 transition-all shadow-[0_10px_30px_rgba(255,255,255,0.1)] hover:-translate-y-1">
+                    Play Now
+                  </button>
                 </div>
-                <h2 className="text-5xl font-black text-white mb-4 tracking-tighter">${featuredGame?.title}</h2>
-                <p className="text-neutral-300 text-sm leading-relaxed mb-6 line-clamp-2 font-medium">${featuredGame?.description}</p>
-                <button className="px-10 py-3.5 bg-white text-black font-black text-sm uppercase tracking-widest rounded-xl hover:bg-neutral-200 transition-all shadow-[0_10px_30px_rgba(255,255,255,0.1)] hover:-translate-y-1">
-                  Launch Proxy
-                </button>
+              </section>
+            ` : html`
+              <div className="h-80 rounded-[32px] bg-neutral-900/50 border border-dashed border-neutral-800 flex items-center justify-center">
+                 <div className="text-center">
+                    <div className="text-purple-500 mb-2 font-black uppercase tracking-widest text-xs">Archives offline</div>
+                    <div className="text-neutral-500 text-sm">Waiting for mystical connection...</div>
+                 </div>
               </div>
-            </section>
+            `}
 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
               <div className="bg-[#0a0a0a] border border-neutral-900 p-6 rounded-3xl hover:border-neutral-800 transition-colors">
@@ -396,12 +461,12 @@ const App = () => {
              </div>
              <h2 className="text-6xl font-black text-white mb-6 tracking-tighter uppercase drop-shadow-2xl">Rest in Peace Arcade 4.0</h2>
              <div className="w-24 h-1 bg-neutral-900 mx-auto mb-8 rounded-full"></div>
-             <p className="text-neutral-500 text-sm font-medium tracking-[0.4em] uppercase opacity-40">A legendary era of unblocked gaming.</p>
+             <p className="text-neutral-500 text-sm font-medium tracking-[0.4em] uppercase opacity-40 font-bold">A legendary era of unblocked gaming.</p>
           </div>
         ` : html`
           <div className="max-w-3xl animate-in fade-in slide-in-from-bottom-4 duration-500">
             <h2 className="text-4xl font-black text-white mb-2 tracking-tight uppercase">Preferences</h2>
-            <p className="text-neutral-500 text-sm font-medium mb-12">Fine-tune your Arcane experience.</p>
+            <p className="text-neutral-500 text-sm font-medium mb-12 uppercase tracking-widest text-[10px]">Fine-tune your Arcane experience.</p>
             
             <div className="bg-[#0a0a0a] border border-neutral-800 rounded-3xl p-8 mb-8">
               <h3 className="text-lg font-black text-white mb-2 uppercase tracking-wide">Stealth Mode</h3>
