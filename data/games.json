@@ -1,0 +1,70 @@
+
+[
+  {
+    "id": "1",
+    "title": "Retro Bowl",
+    "description": "The perfect game for the armchair quarterback. Can you lead your team to the championship?",
+    "thumbnail": "https://picsum.photos/seed/retrobowl/400/250",
+    "iframeUrl": "https://game316009.konggames.com/gamez/0031/6009/live/index.html",
+    "category": "Sports",
+    "isHot": true
+  },
+  {
+    "id": "2",
+    "title": "2048",
+    "description": "Join the numbers and get to the 2048 tile!",
+    "thumbnail": "https://picsum.photos/seed/2048/400/250",
+    "iframeUrl": "https://play2048.co/",
+    "category": "Puzzle"
+  },
+  {
+    "id": "3",
+    "title": "Doodle Jump",
+    "description": "Jump as high as you can in this classic arcade experience.",
+    "thumbnail": "https://picsum.photos/seed/doodlejump/400/250",
+    "iframeUrl": "https://doodlejump.io/game/",
+    "category": "Arcade",
+    "isHot": true
+  },
+  {
+    "id": "4",
+    "title": "HexGL",
+    "description": "A high-speed futuristic racing game. Test your reflexes!",
+    "thumbnail": "https://picsum.photos/seed/hexgl/400/250",
+    "iframeUrl": "http://hexgl.bkcore.com/play/",
+    "category": "Action"
+  },
+  {
+    "id": "5",
+    "title": "Little Alchemy 2",
+    "description": "Mix elements to create the world from scratch.",
+    "thumbnail": "https://picsum.photos/seed/alchemy/400/250",
+    "iframeUrl": "https://littlealchemy2.com/",
+    "category": "Puzzle"
+  },
+  {
+    "id": "6",
+    "title": "Cookie Clicker",
+    "description": "The ultimate idle game. Bake as many cookies as you can!",
+    "thumbnail": "https://picsum.photos/seed/cookie/400/250",
+    "iframeUrl": "https://orteil.dashnet.org/cookieclicker/",
+    "category": "Arcade"
+  },
+  {
+    "id": "7",
+    "title": "Paper.io 2",
+    "description": "Capture territory and become the largest player on the board.",
+    "thumbnail": "https://picsum.photos/seed/paperio/400/250",
+    "iframeUrl": "https://paper-io.com/",
+    "category": "Action",
+    "isHot": true
+  },
+  {
+    "id": "8",
+    "title": "Eaglercraft",
+    "description": "Classic block-building survival in your browser.",
+    "thumbnail": "https://picsum.photos/seed/minecraft/400/250",
+    "iframeUrl": "https://eaglercraft.com/mc/1.8.8/",
+    "category": "Adventure"
+  }
+]
