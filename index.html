@@ -3,49 +3,79 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Arcane Games</title>
+    <title>Arcane</title>
+    <link id="favicon" rel="icon" type="image/png" href="https://i.ibb.co/cPqZF2V/Arcanelogo.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
       body {
         font-family: 'Inter', sans-serif;
-        background-color: #020617; /* slate-950 */
-        color: #f8fafc; /* slate-50 */
+        background-color: #050505;
+        color: #e5e7eb;
         overflow-x: hidden;
       }
-      .font-arcane {
-        font-family: 'Uncial+Antiqua', cursive;
+      .bg-arsenic {
+        background-color: #0a0a0a;
       }
-      /* Custom Scrollbar */
+      .arsenic-border {
+        border-color: rgba(124, 58, 237, 0.2);
+      }
+      .arsenic-glow:hover {
+        box-shadow: 0 0 25px rgba(124, 58, 237, 0.15);
+        border-color: rgba(124, 58, 237, 0.5);
+      }
       ::-webkit-scrollbar {
-        width: 8px;
+        width: 6px;
       }
       ::-webkit-scrollbar-track {
-        background: #020617;
+        background: #050505;
       }
       ::-webkit-scrollbar-thumb {
-        background: #4c1d95;
+        background: #262626;
         border-radius: 10px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #6d28d9;
+        background: #404040;
       }
-      .glass {
-        background: rgba(15, 23, 42, 0.6);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(139, 92, 246, 0.2);
-      }
-      .glow-purple {
-        box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+      .sidebar-item-active {
+        background-color: rgba(124, 58, 237, 0.1);
+        color: #a78bfa;
+        border-right: 3px solid #7c3aed;
       }
       .scrollbar-hide::-webkit-scrollbar {
         display: none;
       }
-      .scrollbar-hide {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
+
+      /* Arcane Startup Animations */
+      @keyframes rune-spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      @keyframes rune-spin-reverse {
+        from { transform: rotate(360deg); }
+        to { transform: rotate(0deg); }
+      }
+      @keyframes magic-pulse {
+        0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.3)); }
+        50% { transform: scale(1.05); filter: drop-shadow(0 0 40px rgba(139, 92, 246, 0.6)); }
+      }
+      @keyframes casting-fill {
+        0% { width: 0%; }
+        100% { width: 100%; }
+      }
+      .animate-rune-spin {
+        animation: rune-spin 20s linear infinite;
+      }
+      .animate-rune-spin-reverse {
+        animation: rune-spin-reverse 15s linear infinite;
+      }
+      .animate-magic-pulse {
+        animation: magic-pulse 3s ease-in-out infinite;
+      }
+      .casting-bar-inner {
+        animation: casting-fill 2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
       }
     </style>
     <script type="importmap">

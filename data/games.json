@@ -1,70 +1,128 @@
-
 [
   {
-    "id": "1",
+    "id": "retro-bowl",
     "title": "Retro Bowl",
-    "description": "The perfect game for the armchair quarterback. Can you lead your team to the championship?",
-    "thumbnail": "https://picsum.photos/seed/retrobowl/400/250",
+    "description": "The ultimate American football management game. Manage your team, call the plays, and win the Bowl.",
+    "thumbnail": "https://play-lh.googleusercontent.com/-BT8C-1UPYWouyjVvWYgaar_-xV4IQvX4Bvib3koGEGiy6UsHlt0RgYpUrdTDfC2y0ct=s96-rw",
     "iframeUrl": "https://game316009.konggames.com/gamez/0031/6009/live/index.html",
     "category": "Sports",
     "isHot": true
   },
   {
-    "id": "2",
-    "title": "2048",
-    "description": "Join the numbers and get to the 2048 tile!",
-    "thumbnail": "https://picsum.photos/seed/2048/400/250",
-    "iframeUrl": "https://play2048.co/",
-    "category": "Puzzle"
-  },
-  {
-    "id": "3",
-    "title": "Doodle Jump",
-    "description": "Jump as high as you can in this classic arcade experience.",
-    "thumbnail": "https://picsum.photos/seed/doodlejump/400/250",
-    "iframeUrl": "https://doodlejump.io/game/",
-    "category": "Arcade",
+    "id": "galaxy-clicker",
+    "title": "Galaxy Clicker",
+    "description": "Galaxy Clicker is an idle game featuring different planets, stars, and star systems. Earn income as planets revolve and merge them to grow your universe.",
+    "thumbnail": "https://imgs.crazygames.com/galaxy-clicker_16x9/20240417031513/galaxy-clicker_16x9-cover?metadata=none&quality=60&width=273&fit=crop&dpr=3",
+    "iframeUrl": "https://games.crazygames.com/en_US/galaxy-clicker/index.html?v=1.349",
+    "category": "Strategy",
     "isHot": true
   },
   {
-    "id": "4",
-    "title": "HexGL",
-    "description": "A high-speed futuristic racing game. Test your reflexes!",
-    "thumbnail": "https://picsum.photos/seed/hexgl/400/250",
-    "iframeUrl": "http://hexgl.bkcore.com/play/",
-    "category": "Action"
-  },
-  {
-    "id": "5",
-    "title": "Little Alchemy 2",
-    "description": "Mix elements to create the world from scratch.",
-    "thumbnail": "https://picsum.photos/seed/alchemy/400/250",
-    "iframeUrl": "https://littlealchemy2.com/",
-    "category": "Puzzle"
-  },
-  {
-    "id": "6",
-    "title": "Cookie Clicker",
-    "description": "The ultimate idle game. Bake as many cookies as you can!",
-    "thumbnail": "https://picsum.photos/seed/cookie/400/250",
-    "iframeUrl": "https://orteil.dashnet.org/cookieclicker/",
-    "category": "Arcade"
-  },
-  {
-    "id": "7",
-    "title": "Paper.io 2",
-    "description": "Capture territory and become the largest player on the board.",
-    "thumbnail": "https://picsum.photos/seed/paperio/400/250",
-    "iframeUrl": "https://paper-io.com/",
+    "id": "subway-surfers",
+    "title": "Subway Surfers",
+    "description": "Dash as fast as you can! Dodge the oncoming trains in the most famous endless runner.",
+    "thumbnail": "https://petezahgames.com/storage/images/main3/subwaysurfers.png",
+    "iframeUrl": "https://4yqt7wrhtx-ship-it.github.io/action-games/subway-surfers/",
     "category": "Action",
     "isHot": true
   },
   {
-    "id": "8",
-    "title": "Eaglercraft",
-    "description": "Classic block-building survival in your browser.",
-    "thumbnail": "https://picsum.photos/seed/minecraft/400/250",
-    "iframeUrl": "https://eaglercraft.com/mc/1.8.8/",
-    "category": "Adventure"
+    "id": "growden-io",
+    "title": "Growden.io",
+    "description": "A multiplayer IO game where you grow and compete for territory in a vibrant garden.",
+    "thumbnail": "https://imgs.crazygames.com/grow-a-garden---growden-io_16x9/20251117094451/grow-a-garden---growden-io_16x9-cover?metadata=none&quality=85&width=273&fit=crop&dpr=1",
+    "iframeUrl": "https://growden.io/?cg=true&auto_play=true&isNewUser=true&skipPrerollFirstSession=true",
+    "category": "Arcade",
+    "isHot": true
+  },
+  {
+    "id": "ragdoll-hit",
+    "title": "Ragdoll Hit",
+    "description": "A physics-based ragdoll fighting game. Use your surroundings and momentum to defeat your enemies.",
+    "thumbnail": "https://petezahgames.com/storage/images/main/ragdoll-hit.jpeg",
+    "iframeUrl": "/storage/ag/g/ragdoll-hit",
+    "category": "Arcade"
+  },
+  {
+    "id": "stickman-hook",
+    "title": "Stickman Hook",
+    "description": "Swing like a spider! Tap to hook and make incredible jumps in this addictive platformer.",
+    "thumbnail": "https://petezahgames.com/storage/images/main/stickmanhook.jpg",
+    "iframeUrl": "/storage/ag/g/stickman-hook",
+    "category": "Action",
+    "isHot": true
+  },
+  {
+    "id": "ragdoll-archers",
+    "title": "Ragdoll Archers",
+    "description": "Aim and shoot arrows at other ragdolls in this high-stakes physics archery game.",
+    "thumbnail": "https://petezahgames.com/storage/images/main/ragdoll.jpg",
+    "iframeUrl": "/storage/ag/g/ragdoll-archers",
+    "category": "Action"
+  },
+  {
+    "id": "tag-game",
+    "title": "Tag",
+    "description": "Classic game of tag! Run, jump, and dodge to avoid being 'it' in various arenas.",
+    "thumbnail": "https://construct-static.com/uploads/13309/ee601db1-834b-4e31-bd70-0a0fb0173f7e/c/-895885962/picture%20450x300.jpg",
+    "iframeUrl": "https://script.google.com/macros/s/AKfycby2Crs4kcY3H8tDRHQp1JRJNd_v8_zYBjwU-qF2trfXQWAeWpW1vFVzGgQdv-Ejmq6P/exec",
+    "category": "Arcade"
+  },
+  {
+    "id": "yohoho-io",
+    "title": "YoHoHo.io",
+    "description": "Become the ultimate pirate king! Battle other pirates and collect gold to grow larger in this fun IO arena.",
+    "thumbnail": "https://petezahgames.com/storage/images/main3/yohohoio.png",
+    "iframeUrl": "/storage/ag/g2/yohoho-io/",
+    "category": "Arcade",
+    "isHot": true
+  },
+  {
+    "id": "paper-io-2",
+    "title": "Paper.io 2",
+    "description": "Conquer as much territory as possible and beat the competition. A smooth drawing experience!",
+    "thumbnail": "https://petezahgames.com/storage/images/main/paper2.jpg",
+    "iframeUrl": "/storage/ag/g/paperio2",
+    "category": "Arcade"
+  },
+  {
+    "id": "chicken-clicker",
+    "title": "Chicken Clicker",
+    "description": "A fun idle game where you help a fearless chicken soar higher and uncover bizarre realms. Click to build your egg empire.",
+    "thumbnail": "https://imgs.crazygames.com/chicken-clicker_16x9/20241128031329/chicken-clicker_16x9-cover?metadata=none&quality=50&width=273&fit=crop&dpr=4",
+    "iframeUrl": "https://games.crazygames.com/en_US/chicken-clicker/index.html?v=1.349",
+    "category": "Strategy"
+  },
+  {
+    "id": "basket-random",
+    "title": "Basket Random",
+    "description": "Funny physics-based basketball with random players and courts. One button fun.",
+    "thumbnail": "https://4yqt7wrhtx-ship-it.github.io/driving-games/basket-random/BasketRandom.png",
+    "iframeUrl": "https://4yqt7wrhtx-ship-it.github.io/driving-games/basket-random/",
+    "category": "Sports"
+  },
+  {
+    "id": "soccer-random",
+    "title": "Soccer Random",
+    "description": "One-button soccer with ridiculous physics. Goal-scoring madness.",
+    "thumbnail": "https://4yqt7wrhtx-ship-it.github.io/driving-games/soccer-random/unnamed.png",
+    "iframeUrl": "https://4yqt7wrhtx-ship-it.github.io/driving-games/soccer-random/",
+    "category": "Sports"
+  },
+  {
+    "id": "boxing-random",
+    "title": "Boxing Random",
+    "description": "Ragdoll boxing fun. Land a punch to win in various environments.",
+    "thumbnail": "https://4yqt7wrhtx-ship-it.github.io/driving-games/boxing-random/512x512.jpg",
+    "iframeUrl": "https://4yqt7wrhtx-ship-it.github.io/driving-games/boxing-random/",
+    "category": "Sports"
+  },
+  {
+    "id": "volley-random",
+    "title": "Volley Random",
+    "description": "Ridiculous physics volleyball. Compete with weird physics in various environments.",
+    "thumbnail": "https://4yqt7wrhtx-ship-it.github.io/driving-games/volley-random/splash.png",
+    "iframeUrl": "https://4yqt7wrhtx-ship-it.github.io/driving-games/volley-random/",
+    "category": "Sports"
   }
 ]
